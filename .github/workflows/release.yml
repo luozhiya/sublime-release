@@ -32,15 +32,15 @@ jobs:
       - name: Download sublime
         run: |
           # merge
-          aria2c https://www.sublimemerge.com/download_thanks?target=win-x64
-          aria2c https://www.sublimemerge.com/download_thanks?target=win-x64-portable
-          aria2c https://www.sublimemerge.com/download_thanks?target=x64-deb
-          aria2c https://www.sublimemerge.com/download_thanks?target=x64-tar
+          aria2c https://www.sublimemerge.com/download_thanks?target=win-x64#direct-downloads
+          aria2c https://www.sublimemerge.com/download_thanks?target=win-x64-portable#direct-downloads
+          aria2c https://www.sublimemerge.com/download_thanks?target=x64-deb#direct-downloads
+          aria2c https://www.sublimemerge.com/download_thanks?target=x64-tar#direct-downloads
           # text
-          aria2c http://www.sublimetext.com/download_thanks?target=win-x64
-          aria2c http://www.sublimetext.com/download_thanks?target=win-x64-portable
-          aria2c http://www.sublimetext.com/download_thanks?target=x64-deb
-          aria2c http://www.sublimetext.com/download_thanks?target=x64-tar
+          aria2c http://www.sublimetext.com/download_thanks?target=win-x64#direct-downloads
+          aria2c http://www.sublimetext.com/download_thanks?target=win-x64-portable#direct-downloads
+          aria2c http://www.sublimetext.com/download_thanks?target=x64-deb#direct-downloads
+          aria2c http://www.sublimetext.com/download_thanks?target=x64-tar#direct-downloads
       - name: Upload 
         uses: actions/upload-artifact@v3
         if: ${{ !startsWith(github.ref, 'refs/tags/') }}
