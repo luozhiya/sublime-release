@@ -42,7 +42,7 @@ jobs:
             aria2c https://download.sublimetext.com/sublime_merge_build_${NUMBER_PART}_x64.zip
           else
             # text-1234
-            NUMBER_PART=$(cut -c 5- <<< $TAG_NAME)      
+            NUMBER_PART=$(cut -c 6- <<< $TAG_NAME)      
             echo $TAG_NAME
             echo $NUMBER_PART            
             aria2c https://download.sublimetext.com/sublime-text_build-${NUMBER_PART}_amd64.deb
