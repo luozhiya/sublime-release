@@ -36,20 +36,19 @@ jobs:
             NUMBER_PART=$(cut -c 7- <<< $TAG_NAME)
             echo $TAG_NAME
             echo $NUMBER_PART
-            echo "MERGE_VERSION=${NUMBER_PART}" >> $GITHUB_ENV
-            echo $MERGE_VERSION
-            aria2c https://download.sublimetext.com/sublime-merge_build-${MERGE_VERSION}_amd64.deb
-            aria2c https://download.sublimetext.com/sublime_merge_build_${MERGE_VERSION}_x64.tar.xz            
-            aria2c https://download.sublimetext.com/sublime_merge_build_${MERGE_VERSION}_x64_setup.exe
-            aria2c https://download.sublimetext.com/sublime_merge_build_${MERGE_VERSION}_x64.zip
+            aria2c https://download.sublimetext.com/sublime-merge_build-${NUMBER_PART}_amd64.deb
+            aria2c https://download.sublimetext.com/sublime_merge_build_${NUMBER_PART}_x64.tar.xz            
+            aria2c https://download.sublimetext.com/sublime_merge_build_${NUMBER_PART}_x64_setup.exe
+            aria2c https://download.sublimetext.com/sublime_merge_build_${NUMBER_PART}_x64.zip
           else
             # text-1234
-            NUMBER_PART=$(cut -c 5- <<< $TAG_NAME)
-            echo "TEXT_VERSION=${NUMBER_PART}" >> $GITHUB_ENV            
-            aria2c https://download.sublimetext.com/sublime-text_build-${TEXT_VERSION}_amd64.deb
-            aria2c https://download.sublimetext.com/sublime_text_build_${TEXT_VERSION}_x64.tar.xz            
-            aria2c https://download.sublimetext.com/sublime_text_build_${TEXT_VERSION}_x64_setup.exe
-            aria2c https://download.sublimetext.com/sublime_text_build_${TEXT_VERSION}_x64.zip
+            NUMBER_PART=$(cut -c 5- <<< $TAG_NAME)      
+            echo $TAG_NAME
+            echo $NUMBER_PART            
+            aria2c https://download.sublimetext.com/sublime-text_build-${NUMBER_PART}_amd64.deb
+            aria2c https://download.sublimetext.com/sublime_text_build_${NUMBER_PART}_x64.tar.xz            
+            aria2c https://download.sublimetext.com/sublime_text_build_${NUMBER_PART}_x64_setup.exe
+            aria2c https://download.sublimetext.com/sublime_text_build_${NUMBER_PART}_x64.zip
           fi
       - name: Upload 
         uses: actions/upload-artifact@v3
