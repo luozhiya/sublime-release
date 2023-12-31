@@ -34,7 +34,10 @@ jobs:
           if [[ "$TAG_NAME" == *"merge"* ]]; then
             # merge-1234
             NUMBER_PART=$(cut -c 7- <<< $TAG_NAME)
+            echo $TAG_NAME
+            echo $NUMBER_PART
             echo "MERGE_VERSION=${NUMBER_PART}" >> $GITHUB_ENV
+            echo $MERGE_VERSION
             aria2c https://download.sublimetext.com/sublime-merge_build-${MERGE_VERSION}_amd64.deb
             aria2c https://download.sublimetext.com/sublime_merge_build_${MERGE_VERSION}_x64.tar.xz            
             aria2c https://download.sublimetext.com/sublime_merge_build_${MERGE_VERSION}_x64_setup.exe
