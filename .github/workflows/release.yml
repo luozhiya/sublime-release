@@ -22,25 +22,32 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl aria2
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 1
-      - name: Write release version
+          fetch-depth: 1  
+      - if: github.event_name == 'workflow_dispatch'
+        run: echo "TAG_NAME=${{ github.event.inputs.tag_name }}" >> $GITHUB_ENV
+      - if: github.event_name == 'push'
         run: |
-          VERSION=${GITHUB_REF_NAME#v}
-          VERSION=${VERSION//\//}
-          echo Version: $VERSION
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          TAG_NAME=${{ github.ref }}
+          echo "TAG_NAME=${TAG_NAME#refs/tags/}" >> $GITHUB_ENV          
       - name: Download sublime
         run: |
-          # merge
-          aria2c https://www.sublimemerge.com/download_thanks?target=win-x64#direct-downloads
-          aria2c https://www.sublimemerge.com/download_thanks?target=win-x64-portable#direct-downloads
-          aria2c https://www.sublimemerge.com/download_thanks?target=x64-deb#direct-downloads
-          aria2c https://www.sublimemerge.com/download_thanks?target=x64-tar#direct-downloads
-          # text
-          aria2c http://www.sublimetext.com/download_thanks?target=win-x64#direct-downloads
-          aria2c http://www.sublimetext.com/download_thanks?target=win-x64-portable#direct-downloads
-          aria2c http://www.sublimetext.com/download_thanks?target=x64-deb#direct-downloads
-          aria2c http://www.sublimetext.com/download_thanks?target=x64-tar#direct-downloads
+          if [[ "$TAG_NAME" == *"merge"* ]]; then
+            # merge-1234
+            NUMBER_PART=$(cut -c 7- <<< $TAG_NAME)
+            echo "MERGE_VERSION=${NUMBER_PART}" >> $GITHUB_ENV
+            aria2c https://download.sublimetext.com/sublime-merge_build-${MERGE_VERSION}_amd64.deb
+            aria2c https://download.sublimetext.com/sublime_merge_build_${MERGE_VERSION}_x64.tar.xz            
+            aria2c https://download.sublimetext.com/sublime_merge_build_${MERGE_VERSION}_x64_setup.exe
+            aria2c https://download.sublimetext.com/sublime_merge_build_${MERGE_VERSION}_x64.zip
+          else
+            # text-1234
+            NUMBER_PART=$(cut -c 5- <<< $TAG_NAME)
+            echo "TEXT_VERSION=${NUMBER_PART}" >> $GITHUB_ENV            
+            aria2c https://download.sublimetext.com/sublime-text_build-${TEXT_VERSION}_amd64.deb
+            aria2c https://download.sublimetext.com/sublime_text_build_${TEXT_VERSION}_x64.tar.xz            
+            aria2c https://download.sublimetext.com/sublime_text_build_${TEXT_VERSION}_x64_setup.exe
+            aria2c https://download.sublimetext.com/sublime_text_build_${TEXT_VERSION}_x64.zip
+          fi
       - name: Upload 
         uses: actions/upload-artifact@v3
         if: ${{ !startsWith(github.ref, 'refs/tags/') }}
